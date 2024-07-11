@@ -1,0 +1,79 @@
+Se você estiver utilizando o Cloudflare como seu provedor DNS e com o Proxy ativo (orange cloud), você precisará configurar o Nginx de maneira um pouco diferente para garantir que o tráfego seja corretamente direcionado para o seu aplicativo Node.js. Aqui estão os passos ajustados:
+
+Configuração do Nginx com Cloudflare Proxy ativo
+Quando o Proxy do Cloudflare está ativo (representado pela nuvem laranja), o tráfego para o seu domínio passa através dos servidores do Cloudflare antes de chegar ao seu servidor. Isso significa que o Nginx deve estar configurado para lidar com os cabeçalhos corretamente.
+
+Instale o Nginx:
+
+Se ainda não tiver o Nginx instalado, execute o seguinte comando para instalá-lo:
+
+bash
+Copiar código
+sudo apt update
+sudo apt install nginx
+Configure o Nginx:
+
+Abra o arquivo de configuração do site padrão do Nginx:
+
+bash
+Copiar código
+sudo nano /etc/nginx/sites-available/default
+Dentro do bloco server, substitua ou adicione a seguinte configuração:
+
+nginx
+Copiar código
+server {
+    listen 80;
+    server_name SEU_DOMINO_AQUI;
+
+    location / {
+        proxy_pass http://localhost:3000;  # Porta em que o Node.js está rodando
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+proxy_set_header Host $host;: Define o cabeçalho Host com o host original.
+proxy_set_header X-Real-IP $remote_addr;: Passa o IP real do cliente para o Node.js.
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;: Define o cabeçalho X-Forwarded-For para rastrear o endereço IP do cliente original.
+proxy_set_header X-Forwarded-Proto $scheme;: Passa o protocolo HTTP ou HTTPS usado na conexão original.
+Certifique-se de ajustar a porta (3000 no exemplo) se o seu aplicativo Node.js estiver rodando em uma porta diferente.
+
+Salve e feche o arquivo.
+
+Teste a configuração do Nginx:
+
+Verifique se a configuração está correta:
+
+bash
+Copiar código
+sudo nginx -t
+Recarregue o Nginx:
+
+Recarregue o Nginx para aplicar as alterações:
+
+bash
+Copiar código
+sudo systemctl reload nginx
+Configuração no Painel do Cloudflare
+No painel de controle do Cloudflare:
+
+Certifique-se de que o DNS está configurado corretamente:
+
+Verifique se o registro A para SEUDOMINIO está apontando para o endereço IP correto do seu servidor.
+
+Desative temporariamente o Proxy (nuvem laranja) para teste:
+
+Para garantir que tudo esteja funcionando corretamente, desative temporariamente o Proxy (nuvem laranja) no registro A para SEUDOMINIO. Isso permitirá que você acesse diretamente o servidor sem passar pelo Cloudflare.
+
+Teste o acesso ao seu aplicativo:
+
+Após configurar o Nginx e ajustar as configurações no Cloudflare, teste o acesso ao seu aplicativo Node.js através do domínio SEUDOMINIO. Verifique se o redirecionamento está funcionando corretamente e se o Proxy no Cloudflare pode ser ativado novamente após a confirmação de que tudo está operacional.
+
+Conclusão
+Configurar o Nginx com o Cloudflare Proxy ativo é essencial para garantir que todas as solicitações cheguem corretamente ao seu aplicativo Node.js. Certifique-se de verificar as configurações tanto no Nginx quanto no painel de controle do Cloudflare para garantir que tudo funcione perfeitamente.
