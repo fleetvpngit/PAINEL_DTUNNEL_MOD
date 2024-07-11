@@ -20,9 +20,30 @@
 - [x] Zod (Oferece validação de dados rápida e flexível em TypeScript)
 - [x] ETA (Uma alternativa EJS mais rápida, leve e configurável)
 
-## Iniciando o projeto
 
-Primeiro você deve criar seu arquivo de variável ambiente `.env` na pasta do projeto.
+### 1. Configuracoes Iniciais:
+
+```bash
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+```
+
+```bash
+sudo apt install -y nodejs
+```
+
+```bash
+npm install -g prisma
+```
+
+```bash
+git clone https://github.com/fleetvpngit/PAINEL_DTUNNEL_MOD.git
+```
+
+```bash
+cd PAINEL_DTUNNEL_MOD
+```
+
+Crie seu arquivo de variável ambiente `.env` na pasta do projeto.
 Exemplo:
 
 ```cl
