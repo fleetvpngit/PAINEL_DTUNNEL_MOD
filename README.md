@@ -24,11 +24,11 @@
 ### 1. Configuracoes Iniciais:
 
 ```bash
+sudo apt remove --purge nodejs libnode-dev -y
+sudo apt autoremove -y
+sudo apt clean
+sudo apt update
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-```
-
-```bash
-sudo apt install -y nodejs
 ```
 
 ```bash
