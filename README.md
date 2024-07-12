@@ -29,6 +29,8 @@ sudo apt autoremove -y
 sudo apt clean
 sudo apt update
 curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt install -y nodejs
+
 ```
 
 ```bash
