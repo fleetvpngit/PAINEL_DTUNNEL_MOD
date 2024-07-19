@@ -74,6 +74,9 @@ npx prisma generate
 
 ### 3. Crie as migrations do banco de dados
 
+Caso você já possua um database.db, nao execute esse comando. Apenas insira o arquivo na pasta prisma e inicie o projeto diretamente.
+Caso contrário, o aplicativo não irá atualizar.
+
 ```bash
 npx prisma migrate deploy
 ```
